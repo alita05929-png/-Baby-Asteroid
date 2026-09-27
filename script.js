@@ -10,13 +10,13 @@
      · empty link      → button points at the X account instead
    ───────────────────────────────────────────────────────────── */
 const CONFIG = {
-  // BEP-20 contract address. Leave "" until the real $BABYASTEROID CA is ready.
-  contract: "",
+  // Solana mint address.
+  contract: "GiMcbhXRvPZC2QrwjVYEPuLm4Bxm4NxwrvuqamP3pump",
 
   // Trading + chart links
-  buy:      "",
-  chart:    "",
-  scan:     "",
+  buy:      "https://pump.fun/coin/GiMcbhXRvPZC2QrwjVYEPuLm4Bxm4NxwrvuqamP3pump",
+  chart:    "https://dexscreener.com/solana/GiMcbhXRvPZC2QrwjVYEPuLm4Bxm4NxwrvuqamP3pump",
+  scan:     "https://solscan.io/token/GiMcbhXRvPZC2QrwjVYEPuLm4Bxm4NxwrvuqamP3pump",
 
   // Socials
   twitter:  "https://x.com/BabyAsteroidsol",
@@ -65,7 +65,7 @@ const CONFIG = {
   if (!box || !text || !btn) return;
 
   const ca = (CONFIG.contract || "").trim();
-  const isValid = /^0x[a-fA-F0-9]{40}$/.test(ca);
+  const isValid = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(ca);
 
   if (!isValid) {
     box.classList.add("is-pending");

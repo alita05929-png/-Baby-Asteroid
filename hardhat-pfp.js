@@ -27,7 +27,7 @@
 
   var PALETTE = [
     { name: "Launch Gold", hex: "#ffc107" },
-    { name: "BNB Gold", hex: "#f0b90b" },
+    { name: "Sun Gold", hex: "#f0b90b" },
     { name: "Booster Orange", hex: "#ff8a1e" },
     { name: "Ion Cyan", hex: "#3ec8ff" },
     { name: "Deep Orbit", hex: "#102a62" },
