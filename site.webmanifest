@@ -1,0 +1,14 @@
+{
+  "name": "Sue the Builder Cat — $SUE",
+  "short_name": "$SUE",
+  "description": "Sue the Builder Cat. A community memecoin launched on Flap, on BNB Smart Chain.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#0c0c0c",
+  "icons": [
+    { "src": "assets/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/sue-icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
