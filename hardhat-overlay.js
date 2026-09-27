@@ -1,10 +1,8 @@
 /* ============================================================
-   Hardhat overlay — drop a picture, put the hardhat on it, download.
+   Sticker overlay — drop a picture, put Baby Asteroid on it.
 
-   The companion to hardhat-pfp.js: that one builds a Sue, this one
-   puts Sue's hat on whatever you already use. Everything here is
-   namespaced `hh` so the two tools can share a page without their
-   ids or classes colliding.
+   The companion to the space PFP builder. Everything here is
+   namespaced `hh` so the two tools can share a page.
 
    Runs entirely client-side; nothing is ever uploaded.
    ============================================================ */
@@ -13,14 +11,10 @@
   "use strict";
 
   var root = document.getElementById("hh");
-  var hatSym = document.getElementById("hhHat");
-  if (!root || !hatSym) return;
+  if (!root) return;
 
-  // Everything about the hat's proportions comes from the artwork's own viewBox,
-  // so swapping the drawing needs no other change.
-  var vb = hatSym.getAttribute("viewBox").trim().split(/[\s,]+/).map(Number);
-  var HAT_RATIO = vb[3] / vb[2];                 // height / width of the hat artwork
-  var CORNER = Math.hypot(0.5, HAT_RATIO / 2);   // corner distance, in hat widths
+  var HAT_RATIO = 1;
+  var CORNER = Math.hypot(0.5, 0.5);
 
   var cv = document.getElementById("hhCanvas");
   var ctx = cv.getContext("2d");
@@ -29,13 +23,14 @@
 
   var img = null, hats = [], sel = -1, drag = null, hatReady = false;
 
-  // Rasterise the inline <symbol> once so the canvas can draw it.
   var hatImg = new Image();
-  hatImg.onload = function () { hatReady = true; draw(); };
-  hatImg.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="' + (vb[2] * 2) + '" height="' + (vb[3] * 2) +
-    '" viewBox="' + vb.join(" ") + '">' + hatSym.innerHTML + "</svg>"
-  );
+  hatImg.onload = function () {
+    HAT_RATIO = hatImg.naturalHeight / hatImg.naturalWidth || 1;
+    CORNER = Math.hypot(0.5, HAT_RATIO / 2);
+    hatReady = true;
+    draw();
+  };
+  hatImg.src = "assets/mascot.png";
 
   /* ---------- image loading ---------- */
 
@@ -215,7 +210,7 @@
     clean(function (b, ext) {
       var a = document.createElement("a");
       a.href = URL.createObjectURL(b);
-      a.download = "sue-hardhat-" + Date.now() + "." + ext;
+      a.download = "baby-asteroid-" + Date.now() + "." + ext;
       a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
     });

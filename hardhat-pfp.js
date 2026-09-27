@@ -1,10 +1,8 @@
 /* ============================================================
-   Hardhat PFP — build your own Sue.
+   Space PFP — build a Baby Asteroid portrait.
 
-   Sue herself is fixed: same cutout, same size, same position in
-   every export. Only the colours and the backdrop behind her
-   change, so a timeline full of these still reads as one crew
-   while no two are quite identical.
+   The pup is fixed: same cutout, same size, same position in
+   every export. Only the colours and the backdrop change.
 
    Runs entirely client-side; nothing is ever uploaded.
    ============================================================ */
@@ -28,31 +26,31 @@
   var INNER = 434;         // radius of the art disc; everything beyond is ring
 
   var PALETTE = [
-    { name: "Hazard Yellow", hex: "#ffc700" },
+    { name: "Launch Gold", hex: "#ffc107" },
     { name: "BNB Gold", hex: "#f0b90b" },
-    { name: "Safety Orange", hex: "#ff6a13" },
-    { name: "Hi-Vis Lime", hex: "#c8ff2e" },
-    { name: "Blueprint Blue", hex: "#1b3a6b" },
-    { name: "Site Teal", hex: "#0f766e" },
-    { name: "Crimson", hex: "#d0342c" },
-    { name: "Violet", hex: "#7b3fe4" },
-    { name: "Concrete", hex: "#8a8578" },
-    { name: "Asphalt", hex: "#0c0c0c" },
-    { name: "Bone", hex: "#f0ece2" }
+    { name: "Booster Orange", hex: "#ff8a1e" },
+    { name: "Ion Cyan", hex: "#3ec8ff" },
+    { name: "Deep Orbit", hex: "#102a62" },
+    { name: "Night Navy", hex: "#070814" },
+    { name: "Nebula Violet", hex: "#6d4bff" },
+    { name: "Mars", hex: "#d0342c" },
+    { name: "Planet Blue", hex: "#2f6dff" },
+    { name: "Star White", hex: "#f3f6ff" },
+    { name: "Void", hex: "#05060e" }
   ];
 
   var state = {
     style: "glow",
-    bg: "#1b3a6b",
-    ring: "#0c0c0c",
-    glow: "#ffc700",
+    bg: "#102a62",
+    ring: "#070814",
+    glow: "#ffc107",
     badge: false
   };
 
   var sue = new Image();
   var sueReady = false;
   sue.onload = function () { sueReady = true; draw(); };
-  sue.src = "assets/sue-cutout.png";
+  sue.src = "assets/mascot.png";
 
   /* ---------- colour helpers ---------- */
 
@@ -93,44 +91,35 @@
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, OUT, OUT);
 
-    } else if (state.style === "hazard") {
-      ctx.fillStyle = c;
+    } else if (state.style === "stars") {
+      ctx.fillStyle = mix(c, "#050814", 0.7);
       ctx.fillRect(0, 0, OUT, OUT);
-      ctx.save();
-      ctx.fillStyle = mix(c, "#000000", 0.78);
-      var step = 116, w = step / 2;
-      for (var x = -OUT; x < OUT * 2; x += step) {
+      var seed = 0;
+      for (var k = 0; k < c.length; k++) seed = (seed * 33 + c.charCodeAt(k)) >>> 0;
+      function rnd() {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+      }
+      for (var n = 0; n < 110; n++) {
+        ctx.fillStyle = rgba("#ffffff", 0.35 + rnd() * 0.65);
         ctx.beginPath();
-        ctx.moveTo(x, OUT);
-        ctx.lineTo(x + w, OUT);
-        ctx.lineTo(x + w + OUT, 0);
-        ctx.lineTo(x + OUT, 0);
-        ctx.closePath();
+        ctx.arc(rnd() * OUT, rnd() * OUT, rnd() * 2.1 + 0.4, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.restore();
 
-    } else { // blueprint
-      var bg = ctx.createRadialGradient(OUT / 2, OUT * 0.4, 40, OUT / 2, OUT / 2, INNER);
-      bg.addColorStop(0, mix(c, "#ffffff", 0.14));
-      bg.addColorStop(1, mix(c, "#000000", 0.5));
-      ctx.fillStyle = bg;
+    } else { // nebula
+      ctx.fillStyle = mix(c, "#050814", 0.4);
       ctx.fillRect(0, 0, OUT, OUT);
-
-      ctx.save();
-      ctx.strokeStyle = rgba("#ffffff", 0.16);
-      ctx.lineWidth = 2;
-      for (var i = 0; i <= OUT; i += 52) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, OUT); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(OUT, i); ctx.stroke();
-      }
-      ctx.strokeStyle = rgba("#ffffff", 0.3);
-      ctx.lineWidth = 3;
-      for (var j = 0; j <= OUT; j += 208) {
-        ctx.beginPath(); ctx.moveTo(j, 0); ctx.lineTo(j, OUT); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(OUT, j); ctx.stroke();
-      }
-      ctx.restore();
+      var n1 = ctx.createRadialGradient(OUT * 0.32, OUT * 0.38, 20, OUT * 0.32, OUT * 0.4, INNER);
+      n1.addColorStop(0, rgba(state.glow, 0.55));
+      n1.addColorStop(1, rgba(state.glow, 0));
+      ctx.fillStyle = n1;
+      ctx.fillRect(0, 0, OUT, OUT);
+      var n2 = ctx.createRadialGradient(OUT * 0.7, OUT * 0.62, 10, OUT * 0.68, OUT * 0.6, INNER * 0.85);
+      n2.addColorStop(0, rgba("#3ec8ff", 0.42));
+      n2.addColorStop(1, rgba("#3ec8ff", 0));
+      ctx.fillStyle = n2;
+      ctx.fillRect(0, 0, OUT, OUT);
     }
   }
 
@@ -149,7 +138,7 @@
 
     paintBackdrop();
 
-    // halo behind Sue, in the chosen glow colour
+    // halo behind the pup, in the chosen glow colour
     var halo = ctx.createRadialGradient(OUT / 2, OUT * 0.52, 20, OUT / 2, OUT * 0.52, INNER);
     halo.addColorStop(0, rgba(state.glow, 0.5));
     halo.addColorStop(0.45, rgba(state.glow, 0.16));
@@ -157,10 +146,10 @@
     ctx.fillStyle = halo;
     ctx.fillRect(0, 0, OUT, OUT);
 
-    // Sue — identical placement every time
+    // Baby — identical placement every time
     if (sueReady) {
-      var s = INNER * 2 * 0.96;
-      ctx.drawImage(sue, OUT / 2 - s / 2, OUT / 2 - s / 2 + INNER * 0.13, s, s);
+      var s = INNER * 2 * 0.9;
+      ctx.drawImage(sue, OUT / 2 - s / 2, OUT / 2 - s / 2 + INNER * 0.02, s, s);
     }
 
     // vignette so she always sits into the frame the same way
@@ -185,9 +174,9 @@
   }
 
   function drawBadge() {
-    var text = "$SUE";
+    var text = "$BABYASTEROID";
     ctx.save();
-    ctx.font = '700 56px "Archivo Black", "Arial Black", Impact, sans-serif';
+    ctx.font = '400 30px "Titan One", "Arial Black", Impact, sans-serif';
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     var pw = ctx.measureText(text).width + 62, ph = 82;
@@ -271,7 +260,7 @@
   });
 
   document.getElementById("hcRandom").addEventListener("click", function () {
-    var styles = ["glow", "hazard", "blueprint", "solid"];
+    var styles = ["glow", "stars", "nebula", "solid"];
     var pick = function () { return PALETTE[(Math.random() * PALETTE.length) | 0].hex; };
 
     state.style = styles[(Math.random() * styles.length) | 0];
@@ -279,7 +268,7 @@
     state.ring = pick();
     state.glow = pick();
     // keep it readable: the ring must not vanish into the backdrop
-    if (state.ring === state.bg) state.ring = "#0c0c0c";
+    if (state.ring === state.bg) state.ring = "#070814";
 
     styleHost.querySelectorAll("button").forEach(function (el) {
       el.classList.toggle("is-on", el.dataset.style === state.style);
@@ -309,7 +298,7 @@
     blobOut(function (b, ext) {
       var a = document.createElement("a");
       a.href = URL.createObjectURL(b);
-      a.download = "sue-pfp-" + Date.now() + "." + ext;
+      a.download = "baby-asteroid-pfp-" + Date.now() + "." + ext;
       a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
     });
@@ -328,7 +317,7 @@
     }, "image/png");
   });
 
-  // The badge uses Archivo Black; redraw once the webfont is ready so the
+  // The badge uses Titan One; redraw once the webfont is ready so the
   // first paint isn't stuck with the fallback.
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(draw);

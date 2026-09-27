@@ -1,5 +1,6 @@
 /* ============================================================
-   $SUE — site config + interactions
+   Baby Asteroid — $BABYASTEROID
+   Site config + interactions
    ============================================================ */
 
 /* ─────────────────────────────────────────────────────────────
@@ -9,20 +10,19 @@
      · empty link      → button points at the X account instead
    ───────────────────────────────────────────────────────────── */
 const CONFIG = {
-  // BEP-20 contract address
-  contract: "0x2Ab8A4Dd2191989aC2898006Df350B236D2B7777",
+  // BEP-20 contract address. Leave "" until the real $BABYASTEROID CA is ready.
+  contract: "",
 
   // Trading + chart links
-  buy:      "https://pancakeswap.finance/swap?outputCurrency=0x2Ab8A4Dd2191989aC2898006Df350B236D2B7777&chain=bsc",
-  chart:    "https://dexscreener.com/bsc/0xffca411cfbcd3194503effa80fd394b55387915c",
-  scan:     "https://bscscan.com/token/0x2Ab8A4Dd2191989aC2898006Df350B236D2B7777",
+  buy:      "",
+  chart:    "",
+  scan:     "",
 
   // Socials
-  twitter:  "https://x.com/Sue_BSC",
-  telegram: "https://t.me/SUEONBSCPORTAL",
+  twitter:  "",
+  telegram: "",
 
-  // Displayed in the tokenomics grid
-  supply:   "1,000,000,000",
+  supply:   "",
 };
 
 /* ── auto-fill links ──────────────────────────────────────── */
@@ -69,10 +69,11 @@ const CONFIG = {
 
   if (!isValid) {
     box.classList.add("is-pending");
-    text.textContent = "Coming soon — CA drops on our official X";
-    btnText.textContent = "Follow";
+    text.textContent = "Coming soon";
+    btnText.textContent = CONFIG.twitter ? "Follow" : "Soon";
     btn.addEventListener("click", () => {
-      window.open(CONFIG.twitter || "https://x.com", "_blank", "noopener");
+      if (!CONFIG.twitter) return;
+      window.open(CONFIG.twitter, "_blank", "noopener");
     });
     return;
   }
